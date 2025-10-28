@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-950 text-gray-100">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gensyn-style Quiz</title>
+
+  <!-- Tailwind CDN (v3) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Alpine.js CDN (v3) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <style>
+    .gradient-bg { background: linear-gradient(135deg, #1a0033, #0d001a); }
+    .btn-pink { @apply bg-gradient-to-r from-pink-600 to-purple-700 text-white font-semibold rounded-full px-8 py-3 hover:from-pink-500 hover:to-purple-600 transition; }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col gradient-bg">
+
+  <!-- Header -->
+  <header class="flex items-center justify-between p-4 border-b border-purple-800">
+    <div class="flex items-center space-x-2">
+      <div class="w-10 h-10 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">G</div>
+      <div>
+        <h1 class="text-xl font-bold text-white">Gensyn</h1>
+        <p class="text-xs text-gray-400">Decentralized AI Compute</p>
+      </div>
+    </div>
+    <button class="text-pink-400 hover:text-pink-300">Post</button>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 flex flex-col items-center justify-center px-6 py-12" x-data="quizApp()">
+
+    <!-- Hero -->
+    <section class="text-center max-w-2xl mb-12">
+      <h2 class="text-6xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-500 mb-4">
+        Decentralized AI Compute
+      </h2>
+      <p class="text-lg md:text-xl text-gray-300 mb-8">
+        Unify the world’s computing power into a single, open network for machine learning.
+        Learn how Gensyn is revolutionizing AI training through decentralization.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button @click="showFaq = true" class="btn-pink">Get Info</button>
+        <button @click="startQuiz" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold rounded-full px-8 py-3 transition">
+          Start Quiz
+        </button>
+      </div>
+
+      <!-- Stats -->
+      <div class="flex justify-center gap-8 mt-10 text-gray-300">
+        <div class="text-center">
+          <div class="text-3xl font-bold text-pink-400">30K+</div>
+          <div class="text-sm">Active Nodes</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold text-pink-400">10</div>
+          <div class="text-sm">Quiz Questions</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold text-pink-400">100%</div>
+          <div class="text-sm">Decentralized</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Modal -->
+    <div x-show="showFaq" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4"
+         @click.away="showFaq = false" x-transition>
+      <div class="bg-gray-900 rounded-xl max-w-2xl w-full p-6 max-h-screen overflow-y-auto">
+        <button @click="showFaq = false" class="float-right text-pink-400 hover:text-pink-300">✕</button>
+        <h3 class="text-3xl font-bold mb-4 text-pink-400">Learn About Gensyn</h3>
+        <p class="text-gray-400 mb-6">Frequently asked questions about decentralized AI compute</p>
+
+        <div class="space-y-4">
+          <!-- Repeat for each FAQ item -->
+          <details class="group">
+            <summary class="flex justify-between items-center cursor-pointer text-lg font-medium">
+              What is Gensyn?
+              <svg class="w-5 h-5 text-pink-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <p class="mt-2 text-gray-300 pl-6">Gensyn is a decentralized compute network that aggregates idle GPUs worldwide to train AI models.</p>
+          </details>
+
+          <details class="group">
+            <summary class="flex justify-between items-center cursor-pointer text-lg font-medium">
+              How does Gensyn work?
+              <svg class="w-5 h-5 text-pink-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <p class="mt-2 text-gray-300 pl-6">Nodes contribute compute, tasks are split, verified via RL Swarm, and rewards are paid in crypto.</p>
+          </details>
+
+          <!-- Add more <details> blocks for the rest of the FAQ list -->
+        </div>
+
+        <button @click="showFaq = false; startQuiz()" class="mt-8 btn-pink w-full">Back to Home &amp; Start Quiz</button>
+      </div>
+    </div>
+
+    <!-- Quiz Section -->
+    <section x-show="inQuiz" class="w-full max-w-3xl" x-transition>
+      <div class="bg-gray-900 rounded-xl p-6 md:p-8">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-bold text-pink-400">Question <span x-text="current+1"></span>/10</h3>
+          <div class="text-sm text-gray-400">Score: <span x-text="score"></span></div>
+        </div>
+
+        <template x-for="(q, i) in questions" :key="i">
+          <div x-show="current === i" class="space-y-6" x-transition>
+            <p class="text-xl font-medium" x-text="q.question"></p>
+
+            <div class="grid grid-cols-1 gap-3">
+              <template x-for="(opt, idx) in q.options" :key="idx">
+                <button
+                  @click="selectAnswer(i, idx)"
+                  :class="{
+                    'bg-pink-600 text-white': selected[i] === idx && selected[i] === q.correct,
+                    'bg-red-600 text-white': selected[i] === idx && selected[i] !== q.correct,
+                    'bg-gray-800 hover:bg-gray-700': selected[i] === undefined,
+                    'opacity-60': selected[i] !== undefined
+                  }"
+                  class="text-left p-4 rounded-lg transition"
+                  :disabled="selected[i] !== undefined">
+                  <span x-text="opt"></span>
+                </button>
+              </template>
+            </div>
+
+            <div x-show="selected[i] !== undefined" class="mt-4 p-4 bg-gray-800 rounded-lg">
+              <p class="font-semibold" :class="selected[i] === q.correct ? 'text-green-400' : 'text-red-400'">
+                <span x-if="selected[i] === q.correct">Correct!</span>
+                <span x-else>Wrong.</span>
+              </p>
+              <p class="mt-2 text-gray-300" x-text="q.explanation"></p>
+            </div>
+
+            <button @click="nextQuestion"
+                    x-show="selected[i] !== undefined && current < questions.length-1"
+                    class="mt-6 btn-pink w-full">
+              Next
+            </button>
+          </div>
+        </template>
+
+        <!-- Results -->
+        <div x-show="current === questions.length" class="text-center space-y-6">
+          <h3 class="text-3xl font-bold text-pink-400">Quiz Complete!</h3>
+          <p class="text-xl">You scored <span x-text="score"></span> out of <span x-text="questions.length"></span></p>
+          <button @click="restartQuiz" class="btn-pink">Try Again</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Decorative Image (optional) -->
+    <div class="mt-12 w-full max-w-4xl">
+      <img src="https://images.unsplash.com/photo-1518709268805-7ea6c9e3cf08?auto=format&fit=crop&w=1200&q=80"
+           alt="Decentralized compute illustration"
+           class="rounded-xl shadow-2xl w-full object-cover h-64 opacity-80">
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="p-6 text-center text-gray-500 text-sm">
+    <p>© 2025 Gensyn. All rights reserved.</p>
+    <p class="mt-2">Built with <span class="text-pink-400">♥</span> using Tailwind + Alpine</p>
+  </footer>
+
+  <!-- Alpine.js Logic -->
+  <script>
+    function quizApp() {
+      return {
+        showFaq: false,
+        inQuiz: false,
+        current: 0,
+        score: 0,
+        selected: {},
+
+        questions: [
+          {
+            question: "What is the primary goal of Gensyn?",
+            options: ["Centralized cloud training", "Decentralized GPU aggregation", "Quantum computing", "Edge AI inference"],
+            correct: 1,
+            explanation: "Gensyn aggregates idle GPUs worldwide into a single decentralized network for AI training."
+          },
+          {
+            question: "Which technology powers reward verification in Gensyn?",
+            options: ["Proof-of-Work", "RL Swarm", "Zero-Knowledge Proofs", "Federated Learning"],
+            correct: 1,
+            explanation: "RL Swarm (Reinforcement Learning Swarm) verifies computation and distributes rewards."
+          },
+          {
+            question: "How many active nodes are currently on the testnet?",
+            options: ["5K", "30K+", "100K", "1M"],
+            correct: 1,
+            explanation: "Over 30,000 nodes are already active on the Gensyn testnet."
+          },
+          // Add the remaining 7 questions here...
+          // (copy the same structure)
+        ],
+
+        startQuiz() {
+          this.inQuiz = true;
+          this.current = 0;
+          this.score = 0;
+          this.selected = {};
+        },
+        selectAnswer(qIdx, optIdx) {
+          if (this.selected[qIdx] !== undefined) return;
+          this.selected[qIdx] = optIdx;
+          if (optIdx === this.questions[qIdx].correct) this.score++;
+        },
+        nextQuestion() {
+          if (this.current < this.questions.length - 1) this.current++;
+        },
+        restartQuiz() {
+          this.startQuiz();
+        }
+      };
+    }
+  </script>
+</body>
+  </html>
