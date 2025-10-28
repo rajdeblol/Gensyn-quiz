@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-950 text-gray-100">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pharos Network Quiz</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Alpine.js CDN -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    .gradient-bg { background: linear-gradient(135deg, #0a0a1e, #001122); }
+    .btn-pink { @apply bg-gradient-to-r from-pink-600 to-purple-700 text-white font-semibold rounded-full px-8 py-3 hover:from-pink-500 hover:to-purple-600 transition; }
+    .card-glow { box-shadow: 0 0 20px rgba(236,72,153,0.4); }
+    .progress-ring { transform: rotate(-90deg); }
+    .progress-circle { transition: stroke-dashoffset .5s ease; }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col gradient-bg">
+
+  <!-- Header -->
+  <header class="flex items-center justify-between p-4 border-b border-purple-800">
+    <div class="flex items-center space-x-2">
+      <svg class="w-10 h-10 text-pink-400" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 2L1 12h3v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8h3L12 2z"/>
+      </svg>
+      <div>
+        <h1 class="text-xl font-bold text-white">Pharos</h1>
+        <p class="text-xs text-gray-400">Modular Parallel L1 Blockchain</p>
+      </div>
+    </div>
+    <button class="text-pink-400 hover:text-pink-300">Post</button>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 flex flex-col items-center justify-center px-6 py-12" x-data="quizApp()">
+
+    <!-- Hero -->
+    <section class="text-center max-w-2xl mb-12">
+      <h2 class="text-6xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-500 mb-4">
+        Ultra-Fast EVM L1
+      </h2>
+      <p class="text-lg md:text-xl text-gray-300 mb-8">
+        Unify Web2 and Web3 liquidity into a modular, parallel blockchain for RWAs and DeFi at internet scale.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button @click="showFaq = true" class="btn-pink">Get Info</button>
+        <button @click="startQuiz" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold rounded-full px-8 py-3 transition">
+          Start Quiz
+        </button>
+      </div>
+
+      <!-- Stats -->
+      <div class="flex justify-center gap-8 mt-10 text-gray-300">
+        <div class="text-center">
+          <div class="text-3xl font-bold text-pink-400">50K+</div>
+          <div class="text-sm">TPS</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold text-pink-400">10</div>
+          <div class="text-sm">Questions</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold text-pink-400">100%</div>
+          <div class="text-sm">Modular</div>
+        </div>
+      </div>
+
+      <!-- Social Icons -->
+      <div class="flex justify-center gap-6 mt-12">
+        <a href="https://x.com/pharosnetwork" target="_blank" class="text-pink-400 hover:text-pink-300 transition">
+          <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M18.9 1.3h3.8l-8.3 9.5 9.8 12.9h-7.6l-6-7.8-6.8 7.8H.1l8.9-10.2L0 1.3h7.8l5.4 7.1L18.9 1.3zm-1.3 19.5h2.1L6.7 3.6H4.4l13.2 17.2z"/></svg>
+        </a>
+        <a href="https://discord.gg/pharosnetwork" target="_blank" class="text-pink-400 hover:text-pink-300 transition">
+          <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M20.3 3.8c-1.6-1.2-3.9-1.9-6.3-2.1-.3.5-.6 1.2-.8 1.8-2.3-.3-4.6-.3-6.9 0-.2-.6-.5-1.3-.8-1.8-2.4.2-4.7.9-6.3 2.1C1.3 8.3.8 12.7.6 17c2.7 2 5.3 3.2 7.8 3.6.6-.8 1.1-1.7 1.5-2.6.4.2.8.3 1.2.5 1.5.5 3 .7 4.5.7 1.5 0 3-.2 4.5-.7.4-.2.8-.3 1.2-.5.4.9.9 1.8 1.5 2.6 2.5-.4 5.1-1.6 7.8-3.6-.2-4.3-.7-8.7-3.8-13.2zm-9.8 13.3c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm4.7 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- FAQ Modal (10 items) -->
+    <div x-show="showFaq" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4"
+         @click.away="showFaq = false" x-transition>
+      <div class="bg-gray-900 rounded-xl max-w-2xl w-full p-6 max-h-screen overflow-y-auto">
+        <button @click="showFaq = false" class="float-right text-pink-400 hover:text-pink-300">X</button>
+        <h3 class="text-3xl font-bold mb-4 text-pink-400">Learn About Pharos</h3>
+        <p class="text-gray-400 mb-6">10 key facts about Pharos Network</p>
+
+        <div class="space-y-4">
+          <!-- 10 <details> blocks – same as before -->
+          <details class="group"><summary class="flex justify-between items-center cursor-pointer text-lg font-medium">1. What is Pharos Network?<svg class="w-5 h-5 text-pink-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></summary><p class="mt-2 text-gray-300 pl-6">High-performance EVM-compatible L1 for RWAs & DeFi.</p></details>
+          <details class="group"><summary class="flex justify-between items-center cursor-pointer text-lg font-medium">2. What makes Pharos ultra-fast?<svg class="w-5 h-5 text-pink-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></summary><p class="mt-2 text-gray-300 pl-6">50K+ TPS, sub-second finality, GPU-inspired parallel design.</p></details>
+          <!-- ... repeat the other 8 ... -->
+          <details class="group"><summary class="flex justify-between items-center cursor-pointer text-lg font-medium">10. What consensus models does Pharos use?<svg class="w-5 h-5 text-pink-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></summary><p class="mt-2 text-gray-300 pl-6">PBFT, PoS, PoA.</p></details>
+        </div>
+
+        <button @click="showFaq = false; startQuiz()" class="mt-8 btn-pink w-full">Back to Home & Start Quiz</button>
+      </div>
+    </div>
+
+    <!-- Quiz Section -->
+    <section x-show="inQuiz" class="w-full max-w-3xl" x-transition>
+      <div class="bg-gray-900 rounded-xl p-6 md:p-8">
+
+        <!-- Question Header -->
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-bold text-pink-400">Question <span x-text="current+1"></span> of 10</h3>
+          <div class="text-sm text-gray-400">Score: <span x-text="score"></span>/10</div>
+        </div>
+
+        <!-- Progress Dots -->
+        <div class="flex justify-center gap-2 mb-6">
+          <template x-for="(_,i) in questions" :key="i">
+            <div :class="i === current ? 'w-3 h-3 bg-pink-500 rounded-full' : 'w-2 h-2 bg-gray-600 rounded-full'"></div>
+          </template>
+        </div>
+
+        <!-- Question Card -->
+        <template x-for="(q, i) in questions" :key="i">
+          <div x-show="current === i" class="space-y-6" x-transition>
+
+            <div class="bg-white text-gray-900 rounded-2xl p-6 shadow-lg">
+              <p class="text-xl font-semibold mb-4" x-text="q.question"></p>
+
+              <div class="space-y-3">
+                <template x-for="(opt, idx) in q.shuffled" :key="idx">
+                  <label class="flex items-center p-4 rounded-xl cursor-pointer transition"
+                         :class="selected[i] === undefined ? 'bg-gray-100 hover:bg-gray-200' : selected[i] === idx ? (q.correctMap[idx] ? 'bg-teal-100 border-2 border-teal-500' : 'bg-red-100 border-2 border-red-500') : 'bg-gray-100 opacity-50'">
+                    <input type="radio" name="answer" class="sr-only" @click="selectAnswer(i, idx)" :disabled="selected[i] !== undefined">
+                    <span class="ml-3" x-text="opt"></span>
+                  </label>
+                </template>
+              </div>
+            </div>
+
+            <!-- Explanation -->
+            <div x-show="selected[i] !== undefined" class="p-4 bg-gray-800 rounded-xl text-sm">
+              <p class="font-semibold" :class="q.correctMap[selected[i]] ? 'text-green-400' : 'text-red-400'">
+                <span x-if="q.correctMap[selected[i]]">Correct!</span>
+                <span x-else>Wrong.</span>
+              </p>
+              <p class="mt-1 text-gray-300" x-text="q.explanation"></p>
+            </div>
+
+            <!-- Navigation -->
+            <div class="flex justify-between mt-6">
+              <button @click="current = Math.max(0, current-1)" x-show="current > 0 && selected[i] !== undefined"
+                      class="px-6 py-2 bg-gray-700 hover:bg-gray-600 rounded-full text-white">Previous</button>
+              <button @click="nextQuestion"
+                      x-show="selected[i] !== undefined && current < questions.length-1"
+                      class="px-6 py-2 btn-pink">Next</button>
+            </div>
+          </div>
+        </template>
+
+        <!-- ==================== RESULT SCREEN ==================== -->
+        <div x-show="current === questions.length" class="text-center space-y-8" x-ref="results">
+
+          <!-- Circular % Gauge -->
+          <div class="relative w-48 h-48 mx-auto">
+            <svg class="progress-ring w-full h-full">
+              <circle class="text-gray-700" stroke-width="12" stroke="currentColor" fill="transparent" r="80" cx="96" cy="96"/>
+              <circle class="progress-circle text-pink-500" stroke-width="12" stroke="currentColor" fill="transparent" r="80" cx="96" cy="96"
+                      :stroke-dasharray="circum" :stroke-dashoffset="offset"/>
+            </svg>
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+              <span class="text-5xl font-bold text-pink-400" x-text="percent + '%'"></span>
+              <span class="text-sm text-gray-400" x-text="score + '/10 Correct'"></span>
+            </div>
+          </div>
+
+          <h3 class="text-4xl font-bold text-yellow-400">Keep Learning!</h3>
+          <p class="text-gray-300">Review the info section to learn more</p>
+
+          <!-- About Card -->
+          <div class="bg-gray-800 rounded-2xl p-6 max-w-lg mx-auto text-left">
+            <h4 class="text-xl font-bold text-pink-400 mb-2">About Pharos</h4>
+            <p class="text-sm text-gray-300 leading-relaxed">
+              Pharos is a high-performance, EVM-compatible Layer 1 blockchain designed to unify Web2 and Web3 liquidity for real-world assets (RWAs) and decentralized finance (DeFi) at internet scale. With over 50,000+ TPS and sub-second finality, it’s revolutionizing trustless innovation.
+            </p>
+            <p class="mt-3 text-sm text-gray-400">
+              Ready to join the network? Visit the Pharos website to learn more about becoming a node operator.
+            </p>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="space-y-4">
+            <button @click="restartQuiz" class="btn-pink w-full max-w-xs mx-auto">Retake Quiz</button>
+            <button @click="inQuiz = false" class="bg-gray-700 hover:bg-gray-600 text-white rounded-full px-8 py-3 w-full max-w-xs mx-auto">Back to Home</button>
+          </div>
+
+          <!-- Stats Cards -->
+          <div class="grid grid-cols-1 gap-4 max-w-xs mx-auto">
+            <div class="bg-teal-900 bg-opacity-60 rounded-xl p-4 text-center card-glow">
+              <div class="text-3xl font-bold text-teal-300" x-text="score"></div>
+              <div class="text-sm text-gray-300">Correct Answers</div>
+            </div>
+            <div class="bg-purple-900 bg-opacity-60 rounded-xl p-4 text-center card-glow">
+              <div class="text-3xl font-bold text-purple-300" x-text="10 - score"></div>
+              <div class="text-sm text-gray-300">To Review</div>
+            </div>
+            <div class="bg-blue-900 bg-opacity-60 rounded-xl p-4 text-center card-glow">
+              <div class="text-3xl font-bold text-blue-300" x-text="percent + '%'"></div>
+              <div class="text-sm text-gray-300">Score</div>
+            </div>
+          </div>
+
+          <!-- Pie Chart -->
+          <div class="max-w-xs mx-auto h-48">
+            <canvas x-ref="pieChart"></canvas>
+          </div>
+
+          <!-- Share on X -->
+          <button @click="shareOnX" class="btn-pink flex items-center justify-center gap-2 w-full max-w-xs mx-auto">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.9 1.3h3.8l-8.3 9.5 9.8 12.9h-7.6l-6-7.8-6.8 7.8H.1l8.9-10.2L0 1.3h7.8l5.4 7.1L18.9 1.3zm-1.3 19.5h2.1L6.7 3.6H4.4l13.2 17.2z"/></svg>
+            Post Score on X
+          </button>
+
+          <!-- Made by -->
+          <p class="text-sm text-gray-500 mt-8">
+            Made with <span class="text-red-500">Love</span> by <strong>RajLol</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer (Resources / Community / Follow) -->
+  <footer class="p-6 text-left text-gray-400 text-sm bg-gray-900 mt-auto">
+    <div class="max-w-4xl mx-auto">
+      <div class="flex items-center gap-3 mb-4">
+        <svg class="w-10 h-10 text-pink-400" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2L1 12h3v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8h3L12 2z"/>
+        </svg>
+        <div>
+          <h1 class="text-xl font-bold text-white">Pharos</h1>
+          <p class="text-xs">Decentralized AI compute network powered by RL Swarm</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <h3 class="text-pink-400 font-semibold mb-2">Resources</h3>
+          <ul class="space-y-1">
+            <li><a href="#" class="hover:text-pink-300">Documentation</a></li>
+            <li><a href="#" class="hover:text-pink-300">Blog</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-pink-400 font-semibold mb-2">Community</h3>
+          <ul class="space-y-1">
+            <li><a href="#" class="hover:text-pink-300">Discord</a></li>
+            <li><a href="#" class="hover:text-pink-300">Twitter</a></li>
+            <li><a href="#" class="hover:text-pink-300">GitHub</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-pink-400 font-semibold mb-2">Follow Pharos</h3>
+          <div class="flex gap-3">
+            <a href="#" class="text-pink-400 hover:text-pink-300">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.9 1.3h3.8l-8.3 9.5 9.8 12.9h-7.6l-6-7.8-6.8 7.8H.1l8.9-10.2L0 1.3h7.8l5.4 7.1L18.9 1.3zm-1.3 19.5h2.1L6.7 3.6H4.4l13.2 17.2z"/></svg>
+            </a>
+            <a href="#" class="text-pink-400 hover:text-pink-300">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.3 3.8c-1.6-1.2-3.9-1.9-6.3-2.1-.3.5-.6 1.2-.8 1.8-2.3-.3-4.6-.3-6.9 0-.2-.6-.5-1.3-.8-1.8-2.4.2-4.7.9-6.3 2.1C1.3 8.3.8 12.7.6 17c2.7 2 5.3 3.2 7.8 3.6.6-.8 1.1-1.7 1.5-2.6.4.2.8.3 1.2.5 1.5.5 3 .7 4.5.7 1.5 0 3-.2 4.5-.7.4-.2.8-.3 1.2-.5.4.9.9 1.8 1.5 2.6 2.5-.4 5.1-1.6 7.8-3.6-.2-4.3-.7-8.7-3.8-13.2zm-9.8 13.3c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm4.7 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
+            </a>
+            <a href="#" class="text-pink-400 hover:text-pink-300">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 6.84 9.49c.5 0 .68-.23.68-.5v-1.75c-2.78.61-3.37-1.34-3.37-1.34-.46-1.16-1.12-1.47-1.12-1.47-.91-.62.07-.61.07-.61 1.01.07 1.54 1.03 1.54 1.03.9 1.53 2.36 1.09 2.93.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0 1 12 6.8a9.56 9.56 0 0 1 2.53.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.7-4.57 4.95.36.31.68.92.68 1.86v2.76c0 .27.18.5.69.5A10 10 0 0 0 22 12 10 10 0 0 0 12 2z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8 text-center text-xs text-gray-500">
+        © 2025 Pharos Network. All rights reserved.
+        <span class="block mt-1">Built with <span class="text-pink-400">Love</span> by RajLol</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Alpine.js Logic -->
+  <script>
+    function quizApp() {
+      const circum = 2 * Math.PI * 80;
+      return {
+        showFaq: false,
+        inQuiz: false,
+        current: 0,
+        score: 0,
+        selected: {},
+
+        get percent() { return Math.round((this.score / 10) * 100); },
+        get offset() { return circum - (this.percent / 100) * circum; },
+        circum,
+
+        questions: [
+          { question: "What is Pharos primarily designed to provide?", options: ["Decentralized data storage", "Decentralized compute for AI training", "Blockchain gaming solutions", "Cloud file sharing"], correct: 1, explanation: "Pharos aggregates GPUs for AI model training." },
+          // ... 9 more questions (same as before) ...
+          { question: "What consensus models does Pharos support?", options: ["PoW only", "PBFT, PoS, and PoA", "Nakamoto only", "DPoS"], correct: 1, explanation: "PBFT, PoS, PoA." }
+        ].map(q => {
+          const shuffled = [...q.options];
+          const correctMap = {};
+          const newIdx = Math.floor(Math.random() * 4);
+          [shuffled[q.correct], shuffled[newIdx]] = [shuffled[newIdx], shuffled[q.correct]];
+          shuffled.forEach((_, i) => correctMap[i] = i === newIdx);
+          return { ...q, shuffled, correctMap };
+        }),
+
+        startQuiz() {
+          this.inQuiz = true;
+          this.current = 0;
+          this.score = 0;
+          this.selected = {};
+          this.$nextTick(() => this.initCharts());
+        },
+
+        selectAnswer(qIdx, optIdx) {
+          if (this.selected[qIdx] !== undefined) return;
+          this.selected[qIdx] = optIdx;
+          if (this.questions[qIdx].correctMap[optIdx]) this.score++;
+        },
+
+        nextQuestion() {
+          if (this.current < this.questions.length - 1) this.current++;
+        },
+
+        restartQuiz() {
+          this.current = 0;
+          this.score = 0;
+          this.selected = {};
+          this.$nextTick(() => this.initCharts());
+        },
+
+        initCharts() {
+          if (this.$refs.pieChart && this.current === this.questions.length) {
+            new Chart(this.$refs.pieChart, {
+              type: 'doughnut',
+              data: {
+                datasets: [{ data: [this.score, 10-this.score], backgroundColor: ['#14b8a6', '#a855f7'] }]
+              },
+              options: { cutout: '70%', plugins: { legend: { display: false } } }
+            });
+          }
+        },
+
+        shareOnX() {
+          const txt = `I scored ${this.score}/10 on the @pharosnetwork quiz! ${this.percent}% – can you beat me? https://yourdomain.com/quiz`;
+          window.open(`https://x.com/intent/post?text=${encodeURIComponent(txt)}`, '_blank');
+        }
+      };
+    }
+  </script>
+</body>
+            </html>
