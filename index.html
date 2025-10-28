@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta property="og:title" content="Pharos Network Quiz – Test Your Knowledge on Modular L1 Blockchain" />
   <meta property="og:description" content="Unify Web2 & Web3 liquidity with Pharos – the ultra-fast EVM L1 for RWAs and DeFi. Take the 10-question quiz and share your score!" />
-  <meta property="og:image" content="https://pharos-quiz-alpha.vercel.app/bg.jpg" />
+  <meta property="og:image" content="https://pharos-quiz-alpha.vercel.app/bg.png" />
   <meta property="og:url" content="https://pharos-quiz-alpha.vercel.app/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Pharos Network Quiz – Test Your Knowledge" />
   <meta name="twitter:description" content="Score on Pharos facts: TPS, funding, roadmap & more. Beat 80%?" />
-  <meta name="twitter:image" content="https://pharos-quiz-alpha.vercel.app/bg.jpg" />
+  <meta name="twitter:image" content="https://pharos-quiz-alpha.vercel.app/bg.png" />
   <title>Pharos Network Quiz</title>
 
   <!-- Tailwind CDN -->
@@ -22,7 +22,6 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-    /* Pharos Dark Blue Theme */
     .gradient-bg { 
       background: linear-gradient(135deg, #0a1a3f, #001122); 
     }
@@ -38,9 +37,8 @@
     .progress-circle { 
       transition: stroke-dashoffset .5s ease; 
     }
-    /* Full Lighthouse Background */
     .hero-bg {
-      background-image: url('bg.jpg');
+      background-image: url('bg.png');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
@@ -104,7 +102,7 @@
       </div>
     </section>
 
-    <!-- FAQ Modal -->
+    <!-- FAQ Modal – ALL 10 HARD FACTS RESTORED -->
     <div x-show="showFaq" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4"
          @click.away="showFaq = false" x-transition>
       <div class="bg-gray-900 rounded-xl max-w-2xl w-full p-6 max-h-screen overflow-y-auto backdrop-blur-sm">
@@ -112,17 +110,93 @@
         <h3 class="text-3xl font-bold mb-4 text-cyan-400">Learn About Pharos</h3>
         <p class="text-gray-400 mb-6">10 key hard facts about Pharos Network</p>
 
-        <!-- FAQ Content (same as before) -->
         <div class="space-y-4">
-          <!-- ... (all 10 <details> blocks from previous version) ... -->
-          <!-- Keeping it short here — copy from your last working version -->
+          <details class="group">
+            <summary class="flex justify-between items-center cursor-pointer text-lg font-medium">
+              1. What is Pharos Network?
+              <svg class="w-5 h-5 text-cyan-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <p class="mt-2 text-gray-300 pl-6">Pharos is a full-stack parallel Layer-1 blockchain, EVM-compatible, designed for high-speed scalable dApps, bridging $50T+ in RWAs, TradFi, and cross-chain liquidity into a modular on-chain economy at internet scale.</p>
+          </details>
+
+          <details class="group">
+            <summary class="flex justify-between items-center cursor-pointer text-lg font-medium">
+              2. What is its core technology?
+              <svg class="w-5 h-5 text-cyan-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <p class="mt-2 text-gray-300 pl-6">Features Pharos VM (Dora) with parallel execution, superscalar pipelining, unified IR for EVM/WebAssembly, hyper-parallelism in consensus/execution/storage, and optimizations reducing storage by 80% via GPU-inspired design.</p>
+          </details>
+
+          <details class="group">
+            <summary class="flex justify-between items-center cursor-pointer text-lg font-medium">
+              3. What performance does it achieve?
+              <svg class="w-5 h-5 text-cyan-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <p class="mt-2 text-gray-300 pl-6">50,000+ TPS with sub-second finality; Testnet processed 2.24B+ transactions across 155M+ unique addresses, average block time 0.2s, live for 100+ days.</p>
+          </details>
+
+          <details class="group">
+            <summary class="flex justify-between items-center cursor-pointer text-lg font-medium">
+              4. Who founded Pharos?
+              <svg class="w-5 h-5 text-cyan-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <p class="mt-2 text-gray-300 pl-6">Founded in 2024 by ex-Ant Financial/Alibaba leaders: CEO Alex Zhang (former CTO of Ant Chain), CTO Meng Wu (Chief Security Officer for Ant Financial's Web3 division), and co-founders including Zack Yang and Wish Wu.</p>
+          </details>
+
+          <details class="group">
+            <summary class="flex justify-between items-center cursor-pointer text-lg font-medium">
+              5. What funding has it raised?
+              <svg class="w-5 h-5 text-cyan-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <p class="mt-2 text-gray-300 pl-6">$8M seed round closed Sept 2024 as SAFE with token warrants; co-led by Lightspeed Faction & Hack VC, with SNZ Capital (anchor), Reforge, Dispersion Capital, Hash Global, Generative Ventures, Legend Star, MH Ventures, Zion, Chorus One Ventures.</p>
+          </details>
+
+          <details class="group">
+            <summary class="flex justify-between items-center cursor-pointer text-lg font-medium">
+              6. What are its key use cases?
+              <svg class="w-5 h-5 text-cyan-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <p class="mt-2 text-gray-300 pl-6">On-chain CLOB DEX, real-time payments, institution-level RWAs, scalable DePIN; supports heterogeneous hardware/software, decentralized AI, privacy tech for high-throughput DeFi and enterprise finance.</p>
+          </details>
+
+          <details class="group">
+            <summary class="flex justify-between items-center cursor-pointer text-lg font-medium">
+              7. What partnerships does it have?
+              <svg class="w-5 h-5 text-cyan-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <p class="mt-2 text-gray-300 pl-6">Strategic partnership with ZAN (Ant Digital Technologies' Web3 brand) for node service, security, hardware acceleration; integrations: Orbiter Finance (ETH bridging), Morpho (DeFi lending), Bitverse (AI RWA PerpDEX).</p>
+          </details>
+
+          <details class="group">
+            <summary class="flex justify-between items-center cursor-pointer text-lg font-medium">
+              8. What is its team size and locations?
+              <svg class="w-5 h-5 text-cyan-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <p class="mt-2 text-gray-300 pl-6">11-50 employees (<10 core as of Nov 2024); HQ in Road Town, Tortola (BVI); operations in U.S., Hong Kong, Singapore; plans to expand to 20+ in cryptography, marketing, ecosystem development.</p>
+          </details>
+
+          <details class="group">
+            <summary class="flex justify-between items-center cursor-pointer text-lg font-medium">
+              9. What is the roadmap?
+              <svg class="w-5 h-5 text-cyan-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <p class="mt-2 text-gray-300 pl-6">Testnet live (Q1 2025+); Mainnet H2 2025; focus on enhancing Testnet, RWAfi partnerships, "Real Assets in Motion" stack for real yield/on-chain trading, cross-chain liquidity at internet scale.</p>
+          </details>
+
+          <details class="group">
+            <summary class="flex justify-between items-center cursor-pointer text-lg font-medium">
+              10. What are its achievements?
+              <svg class="w-5 h-5 text-cyan-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <p class="mt-2 text-gray-300 pl-6">Ecosystem: 94K+ new Discord members (total ~900K); events: HKFintechWeek2025, Asia Stablecoin Conference 2025 sponsor/speaker, TOKEN2049 RWA side events; drives mass adoption via efficient RWA/DeFi integration.</p>
+          </details>
         </div>
 
         <button @click="showFaq = false; startQuiz()" class="mt-8 btn-blue w-full">Back to Home & Start Quiz</button>
       </div>
     </div>
 
-    <!-- Quiz Section -->
+    <!-- Quiz Section (unchanged) -->
     <section x-show="inQuiz" class="w-full max-w-3xl" x-transition>
       <div class="bg-gray-900 bg-opacity-90 rounded-xl p-6 md:p-8 backdrop-blur-sm">
 
@@ -234,7 +308,7 @@
             Post Score on X
           </button>
 
-          <!-- Made by – Love in cyan, RajLol in red + clickable -->
+          <!-- Made by -->
           <p class="text-sm text-gray-500 mt-8">
             Made with <span class="text-cyan-400">Love</span> by 
             <a href="https://x.com/Uniquelol181" target="_blank" class="text-red-500 font-bold hover:underline">
@@ -272,7 +346,7 @@
               <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.9 1.3h3.8l-8.3 9.5 9.8 12.9h-7.6l-6-7.8-6.8 7.8H.1l8.9-10.2L0 1.3h7.8l5.4 7.1L18.9 1.3zm-1.3 19.5h2.1L6.7 3.6H4.4l13.2 17.2z"/></svg>
             </a>
             <a href="https://discord.gg/pharos" class="text-cyan-400 hover:text-cyan-300">
-              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.3 3.8c-1.6-1.2-3.9-1.9-6.3-2.1-.3.5-.6 1.2-.8 1.8-2.3-.3-4.6-.3-6.9 0-.2-.6-.5-1.3-.8-1.8-2.4.2-4.7.9-6.3 2.1C1.3 8.3.8 12.7.6 17c2.7 2 5.3 3.2 7.8 3.6.6-.8 1.1-1.7 1.5-2.6.4.2.8.3 1.2.5 1.5.5 3 .7 4.5.7 1.5 0 3-.2 4.5-.7.4-.2.8-.3 1.2-.5.4.9.9  lighthouse1.8 1.5 2.6 2.5-.4 5.1-1.6 7.8-3.6-.2-4.3-.7-8.7-3.8-13.2zm-9.8 13.3c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm4.7 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.3 3.8c-1.6-1.2-3.9-1.9-6.3-2.1-.3.5-.6 1.2-.8 1.8-2.3-.3-4.6-.3-6.9 0-.2-.6-.5-1.3-.8-1.8-2.4.2-4.7.9-6.3 2.1C1.3 8.3.8 12.7.6 17c2.7 2 5.3 3.2 7.8 3.6.6-.8 1.1-1.7 1.5-2.6.4.2.8.3 1.2.5 1.5.5 3 .7 4.5.7 1.5 0 3-.2 4.5-.7.4-.2.8-.3 1.2-.5.4.9.9 1.8 1.5 2.6 2.5-.4 5.1-1.6 7.8-3.6-.2-4.3-.7-8.7-3.8-13.2zm-9.8 13.3c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm4.7 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
             </a>
             <a href="https://www.linkedin.com/company/pharosnetwork/" class="text-cyan-400 hover:text-cyan-300">
               <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782-3.433H.93v8.432h5.189V4zM20.447 24H.553A.547.547 0 0 1 0 23.447V.553A.547.547 0 0 1 .553 0h19.894A.547.547 0 0 1 21 23.447V24z"/></svg>
